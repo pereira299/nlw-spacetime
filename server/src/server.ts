@@ -14,7 +14,9 @@ app.register(cors, {
 app.register(jwt, {
   secret: 'supersecret',
 })
-
+app.get('/', async (req, res) => {
+  return 'Hello World'
+})
 app.register(memoriesRoutes)
 app.register(authRoutes)
 

@@ -1,7 +1,6 @@
 import { FastifyInstance } from 'fastify'
 import { prisma } from '../lib/prisma'
 import * as z from 'zod'
-import 'auth.d.ts'
 
 export async function memoriesRoutes(app: FastifyInstance) {
   app.addHook('preHandler', async (req, res) => {

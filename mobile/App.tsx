@@ -12,12 +12,21 @@ import {
   Roboto_400Regular,
   Roboto_700Bold,
 } from "@expo-google-fonts/roboto";
-
 import { BaiJamjuree_700Bold } from "@expo-google-fonts/bai-jamjuree";
 import blurBg from "./assets/bg-blur.png";
 import Stripes from "./assets/stripes.svg";
 import nlwLogo from "./assets/nlw-spacetime-logo.svg";
 import { styled } from "nativewind";
+import { makeRedirectUri, useAuthRequest, useAutoDiscovery } from "expo-auth-session";
+
+
+
+const discovery = {
+  authorizationEndpoint: "https://github.com/login/oauth/authorize",
+  tokenEndpoint: "https://github.com/login/oauth/access_token",
+  revocationEndpoint:
+    "https://github.com/settings/connections/applications/35e85896234657bdebfe",
+};
 
 export default function App() {
   const [hasLoaded] = useFonts({
@@ -26,9 +35,33 @@ export default function App() {
     BaiJamjuree_700Bold,
   });
 
+  // const disc = useAutoDiscovery("expo://localhost:19000");
+
+  const [request, response, signIn] = useAuthRequest(
+    {
+      clientId: "35e85896234657bdebfe",
+      scopes: ["identity"],
+      redirectUri: "https://auth.expo.io/@pereira299/mobile",
+    },
+    discovery
+  );
+
+  
+  React.useEffect(() => {
+    console.log(makeRedirectUri({
+      scheme: "mobile",
+    }));
+    console.log(response);
+    if (response?.type === "success") {
+      const { code } = response.params;
+      console.log(code);
+    }
+  }, [response]);
+
   if (!hasLoaded) {
     return null;
   }
+
 
   const StyledStripes = styled(Stripes);
   const StyledLogo = styled(nlwLogo);
@@ -57,6 +90,7 @@ export default function App() {
         <TouchableOpacity
           activeOpacity={0.7}
           className="rounded-full bg-green-500 px-5 py-2"
+          onPress={() => signIn()}
         >
           <Text className="font-alt text-sm uppercase text-black">
             Cadastrar lembrança
@@ -64,7 +98,9 @@ export default function App() {
         </TouchableOpacity>
       </View>
 
-      <Text className="mb-5 text-gray-400 text-center font-body">Feito com ❤ no NLW da Rocketseat</Text>
+      <Text className="mb-5 text-center font-body text-gray-400">
+        Feito com ❤ no NLW da Rocketseat
+      </Text>
       <StatusBar style="auto" translucent />
     </ImageBackground>
   );

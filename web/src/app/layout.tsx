@@ -39,7 +39,7 @@ export default function RootLayout({
             <Hero />
             <Copyright />
           </div>
-          <div className="flex flex-col bg-[ur(../assets/images/bg-stars.svg)] bg-cover p-16">
+          <div className="flex flex-col bg-[ur(../assets/images/bg-stars.svg)] bg-cover">
             {children}
           </div>
         </main>

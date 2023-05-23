@@ -1,11 +1,11 @@
 import React from 'react'
 import '../assets/styles/globals.css'
 import { Roboto_Flex as Roboto, Bai_Jamjuree as Bai } from 'next/font/google'
-import { cookies } from 'next/headers'
 import SignIn from '@/components/SignIn'
 import Profile from '@/components/Profile'
 import Hero from '@/components/Hero'
 import Copyright from '@/components/Copyright'
+import Cookies from 'js-cookie'
 
 const roboto = Roboto({ subsets: ['latin'], variable: '--font-roboto' })
 const bai = Bai({
@@ -25,7 +25,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const isAuthenticated = cookies().has('token')
+  const isAuthenticated = Cookies.get('token') !== undefined
   return (
     <html lang="en">
       <body
@@ -39,7 +39,7 @@ export default function RootLayout({
             <Hero />
             <Copyright />
           </div>
-          <div className="flex flex-col bg-[ur(../assets/images/bg-stars.svg)] bg-cover">
+          <div className="flex max-h-screen flex-col overflow-y-scroll bg-[ur(../assets/images/bg-stars.svg)] bg-cover">
             {children}
           </div>
         </main>
